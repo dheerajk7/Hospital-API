@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-//accessing home controller
+//accessing doctor controller
 var doctorController = require("../controllers/doctor_controller");
 
-//routes
+//routes for doctor registration and login
 router.post("/register", doctorController.register);
-router.post("/login", doctorController.login);
+router.post("/login", doctorController.createSession);
 
 module.exports = router;

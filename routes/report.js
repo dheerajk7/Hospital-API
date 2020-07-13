@@ -1,10 +1,20 @@
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
 
-//accessing home controller
+//accessing reports controller
 var reportController = require("../controllers/report_controller");
 
-//routes
-router.get("/:status", reportController.getReports);
+//routes for reports
+
+//route for getting report with report code
+router.get("/get_report/:report_code", reportController.getReportWithCode);
+
+//route for getting report with status
+router.get(
+  "/:status",
+  passport.authenticate("jwt", { session: false }),
+  reportController.getReportsWithStatus
+);
 
 module.exports = router;
