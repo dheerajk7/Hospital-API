@@ -11,10 +11,6 @@ var reportController = require("../controllers/report_controller");
 router.get("/get_report/:report_code", reportController.getReportWithCode);
 
 //route for getting report with status
-router.get(
-  "/:status",
-  passport.authenticate("jwt", { session: false }),
-  reportController.getReportsWithStatus
-);
+router.get("/:status", reportController.getReportsWithStatus);
 
 module.exports = router;

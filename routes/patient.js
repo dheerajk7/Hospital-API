@@ -17,10 +17,6 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   patientController.createReport
 );
-router.get(
-  "/:id/all_reports",
-  passport.authenticate("jwt", { session: false }),
-  patientController.allReports
-);
+router.get("/:id/all_reports", patientController.allReports);
 
 module.exports = router;

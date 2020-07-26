@@ -1,21 +1,20 @@
-const User = require("../models/user");
+const Patient = require("../models/patient");
 const Report = require("../models/report");
 
 module.exports.register = async function (request, response) {
   try {
     let phone = request.body.phone;
     //finding user if already exist with the same phone number
-    let user = await User.findOne({ phone: phone });
+    let patient = await Patient.findOne({ phone: phone });
     //if patient is not registered creating a patient
-    if (!user) {
-      user = await User.create({
+    if (!patient) {
+      patient = await Patient.create({
         phone: phone,
         name: request.body.name,
-        category: "Patient",
       });
       return response.status(200).json({
         data: {
-          patient: user.toObject(),
+          patient: patient.toObject(),
         },
         success: true,
         message: "Patient registered Successfully",
@@ -23,7 +22,7 @@ module.exports.register = async function (request, response) {
     } else {
       return response.status(200).json({
         data: {
-          patient: user.toObject(),
+          patient: patient.toObject(),
         },
         success: true,
         message: "Patient already exist with this mobile number",
@@ -39,7 +38,7 @@ module.exports.register = async function (request, response) {
 
 module.exports.createReport = async function (request, response) {
   try {
-    let patient = await User.findByIdAndUpdate(request.params.id);
+    let patient = await Patient.findByIdAndUpdate(request.params.id);
     //if patient doesn't exist
     if (!patient) {
       return response.status(402).json({
@@ -116,7 +115,7 @@ module.exports.createReport = async function (request, response) {
 
 module.exports.allReports = async function (request, response) {
   //finding all reports of user
-  let patient = await User.findById(request.params.id).populate("reports");
+  let patient = await Patient.findById(request.params.id).populate("reports");
   let finalReports = [];
   //removing some information from report object
   for (report of patient.reports) {

@@ -29,7 +29,7 @@ module.exports.getReportsWithStatus = async function (request, response) {
 module.exports.getReportWithCode = async function (request, response) {
   try {
     //finding report with current report code
-    let report = await Report.find({
+    let report = await Report.findOne({
       code: request.params.report_code,
     }).populate("patient");
     if (!report) {
@@ -40,12 +40,13 @@ module.exports.getReportWithCode = async function (request, response) {
     }
     return response.status(200).json({
       data: {
-        report: report[0].toObject(),
+        report: report.toObject(),
       },
       success: true,
       message: "Report Received",
     });
   } catch (err) {
+    console.log(err);
     return response.status(500).json({
       success: false,
       message: "Internal Server Error",
