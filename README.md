@@ -25,10 +25,10 @@ If you would like to download the code and try it for yourself:
 
 ## Routes
 
-1 /doctors/register -> with user phone number, name, password and confirm password
-2 /doctors/login -> return JWT to be used for authentication
-3 /patients/register -> with patient phone number and name these requires docter's login
-4 /patients/:id/create_report -> Creating report these requires doctor's login
-5 /patients/:id/all_reports -> Getting all reports with patient ID these requires doctor's login
-6 /reports/:status -> Getting all the report with particular status these requires doctor's login
-7 /reports/:code -> Getting report with the code these doesn't requires doctor's login.
+1. /doctors/register -> with user phone number, name, password and confirm password
+2. /doctors/login -> return JWT to be used for authentication
+3. /patients/register -> with patient phone number and name these requires docter's login
+4. /patients/:id/create_report -> Creating report these requires doctor's login
+5. /patients/:id/all_reports -> Getting all reports with patient ID these requires doctor's login
+6. /reports/:status -> Getting all the report with particular status these requires doctor's login
+7. /reports/:code -> Getting report with the code these doesn't requires doctor's login
