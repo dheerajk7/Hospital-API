@@ -36,29 +36,51 @@ describe("Hospital-API", () => {
           done();
         });
     });
-    // it("Check New Patient Registration", (done) => {
-    //   chai
-    //     .request("http://localhost:8000/")
-    //     .post("patients/register")
-    //     .set({
-    //       "content-type": "application/x-www-form-urlencoded",
-    //       Authorization: authorizationToken,
-    //     })
-    //     .send({
-    //       name: "VERMA",
-    //       phone: Date.now(),
-    //     })
-    //     .end((err, response) => {
-    //       if (err) {
-    //         console.log(err);
-    //       }
-    //       response.should.have.status(200);
-    //       response.body.should.have.property("message");
-    //       response.body.message.should.be.eql(
-    //         "Patient registered Successfully"
-    //       );
-    //       done();
-    //     });
-    // });
+    it("Check for report creation by passing only report status", (done) => {
+      chai
+        .request("http://localhost:8000/")
+        .post("patients/5f1d71d227e57a422c8b6ade/create_report")
+        .set({
+          "content-type": "application/x-www-form-urlencoded",
+          Authorization: authorizationToken,
+        })
+        .send({
+          status: "Negative", //passing only status with report body
+        })
+        .end((err, response) => {
+          if (err) {
+            console.log(err);
+          }
+          //checking for various property to validate response object
+          response.should.have.status(200);
+          response.body.data.should.have.property("report_code");
+          response.body.should.have.property("message");
+          response.body.message.should.be.eql("Report created successfully");
+          done();
+        });
+    });
+    it("Check for Invalid patient ID passed while creating report", (done) => {
+      chai
+        .request("http://localhost:8000/")
+        .post("patients/1232232/create_report")
+        .set({
+          "content-type": "application/x-www-form-urlencoded",
+          Authorization: authorizationToken,
+        })
+        .send({
+          status: "Negative", //passing only status with report body
+        })
+        .end((err, response) => {
+          if (err) {
+            console.log(err);
+          }
+          //checking for various property to validate response object
+          response.should.have.status(402);
+          response.body.should.have.property("success").eql(false);
+          response.body.should.have.property("message");
+          response.body.message.should.be.eql("Invalid Patient ID");
+          done();
+        });
+    });
   });
 });
