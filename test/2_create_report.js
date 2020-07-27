@@ -98,7 +98,7 @@ describe("Hospital-API", () => {
           Authorization: authorizationToken,
         })
         .send({
-          status: "Admitted", //passing only status with report body
+          status: "Admitted", //passing invalid status
         })
         .end((err, response) => {
           if (err) {

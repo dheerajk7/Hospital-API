@@ -21,7 +21,7 @@ describe("Hospital-API", () => {
           Authorization: authorizationToken,
         })
         .send({
-          name: "VERMA",
+          name: "VERMA", //sending patient data which is already exist
           phone: "1595846896370",
         })
         .end((err, response) => {

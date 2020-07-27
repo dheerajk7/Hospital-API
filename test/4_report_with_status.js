@@ -71,7 +71,7 @@ describe("Hospital-API", () => {
         });
     });
     //checking getting all report by passing invalid report code
-    it("Check for getting report by passing Report Code", (done) => {
+    it("Check for getting report by passing invalid Report Code", (done) => {
       let reportCode = "1234567890";
       chai
         .request("http://localhost:8000/")
