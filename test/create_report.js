@@ -11,6 +11,7 @@ const authorizationToken =
 
 describe("Hospital-API", () => {
   describe("/Post /patient/:id/create_report", () => {
+    //for checking report creation
     it("Check for report creation by passing report status, doctor name and date", (done) => {
       chai
         .request("http://localhost:8000/")
