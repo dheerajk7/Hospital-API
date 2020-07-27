@@ -62,7 +62,7 @@ describe("Hospital-API", () => {
     it("Check for Invalid patient ID passed while creating report", (done) => {
       chai
         .request("http://localhost:8000/")
-        .post("patients/1232232/create_report")
+        .post("patients/1232232/create_report") //passing wrong patient ID
         .set({
           "content-type": "application/x-www-form-urlencoded",
           Authorization: authorizationToken,
@@ -79,6 +79,31 @@ describe("Hospital-API", () => {
           response.body.should.have.property("success").eql(false);
           response.body.should.have.property("message");
           response.body.message.should.be.eql("Invalid Patient ID");
+          done();
+        });
+    });
+    it("Check for Invalid Status...status values should be only Negative, Travelled-Quarantine, Symptoms-Quarantine, Positive-Admit", (done) => {
+      chai
+        .request("http://localhost:8000/")
+        .post("patients/5f1d71d227e57a422c8b6ade/create_report") //passing correct patient ID
+        .set({
+          "content-type": "application/x-www-form-urlencoded",
+          Authorization: authorizationToken,
+        })
+        .send({
+          status: "Admitted", //passing only status with report body
+        })
+        .end((err, response) => {
+          if (err) {
+            console.log(err);
+          }
+          //checking for various property to validate response object
+          response.should.have.status(402);
+          response.body.should.have.property("success").eql(false);
+          response.body.should.have.property("message");
+          response.body.message.should.be.eql(
+            "Status value is incorrect...values can be only Negative, Travelled-Quarantine, Symptoms-Quarantine, Positive-Admit"
+          );
           done();
         });
     });
