@@ -37,5 +37,29 @@ describe("Hospital-API", () => {
           done();
         });
     });
+    it("Check New Patient Registration", (done) => {
+      chai
+        .request("http://localhost:8000/")
+        .post("patients/register")
+        .set({
+          "content-type": "application/x-www-form-urlencoded",
+          Authorization: authorizationToken,
+        })
+        .send({
+          name: "VERMA",
+          phone: Date.now(),
+        })
+        .end((err, response) => {
+          if (err) {
+            console.log(err);
+          }
+          response.should.have.status(200);
+          response.body.should.have.property("message");
+          response.body.message.should.be.eql(
+            "Patient registered Successfully"
+          );
+          done();
+        });
+    });
   });
 });
