@@ -11,7 +11,7 @@ const authorizationToken =
 
 describe("Hospital-API", () => {
   describe("/Post /patient/:id/create_report", () => {
-    //for checking report creation
+    //for checking report creation by passing all the detail such as status, doctor name and date
     it("Check for report creation by passing report status, doctor name and date", (done) => {
       chai
         .request("http://localhost:8000/")
@@ -37,6 +37,7 @@ describe("Hospital-API", () => {
           done();
         });
     });
+    // for checking report creation by just passing only report's status
     it("Check for report creation by passing only report status", (done) => {
       chai
         .request("http://localhost:8000/")
@@ -60,6 +61,7 @@ describe("Hospital-API", () => {
           done();
         });
     });
+    //check case for passing invalid patient id in params
     it("Check for Invalid patient ID passed while creating report", (done) => {
       chai
         .request("http://localhost:8000/")
@@ -83,6 +85,7 @@ describe("Hospital-API", () => {
           done();
         });
     });
+    //check case for passing invalid status
     it("Check for Invalid Status...status values should be only Negative, Travelled-Quarantine, Symptoms-Quarantine, Positive-Admit", (done) => {
       chai
         .request("http://localhost:8000/")
@@ -105,6 +108,28 @@ describe("Hospital-API", () => {
           response.body.message.should.be.eql(
             "Status value is incorrect...values can be only Negative, Travelled-Quarantine, Symptoms-Quarantine, Positive-Admit"
           );
+          done();
+        });
+    });
+    //check case when report detail are not passed for report creation
+    it("Check case when report detail are not passed to create report", (done) => {
+      chai
+        .request("http://localhost:8000/")
+        .post("patients/5f1d71d227e57a422c8b6ade/create_report") //passing correct patient ID
+        .set({
+          "content-type": "application/x-www-form-urlencoded",
+          Authorization: authorizationToken,
+        })
+        .send({}) //not passing any report body
+        .end((err, response) => {
+          if (err) {
+            console.log(err);
+          }
+          //checking for various property to validate response object
+          response.should.have.status(500);
+          response.body.should.have.property("success").eql(false);
+          response.body.should.have.property("message");
+          response.body.message.should.be.eql("Internal Server Error");
           done();
         });
     });
