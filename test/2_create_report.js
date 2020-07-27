@@ -31,6 +31,7 @@ describe("Hospital-API", () => {
           }
           //checking for various property to validate response object
           response.should.have.status(200);
+          response.body.should.be.a("object");
           response.body.data.should.have.property("report_code");
           response.body.should.have.property("message");
           response.body.message.should.be.eql("Report created successfully");
@@ -55,6 +56,7 @@ describe("Hospital-API", () => {
           }
           //checking for various property to validate response object
           response.should.have.status(200);
+          response.body.should.be.a("object");
           response.body.data.should.have.property("report_code");
           response.body.should.have.property("message");
           response.body.message.should.be.eql("Report created successfully");
@@ -79,6 +81,7 @@ describe("Hospital-API", () => {
           }
           //checking for various property to validate response object
           response.should.have.status(402);
+          response.body.should.be.a("object");
           response.body.should.have.property("success").eql(false);
           response.body.should.have.property("message");
           response.body.message.should.be.eql("Invalid Patient ID");
@@ -103,6 +106,7 @@ describe("Hospital-API", () => {
           }
           //checking for various property to validate response object
           response.should.have.status(402);
+          response.body.should.be.a("object");
           response.body.should.have.property("success").eql(false);
           response.body.should.have.property("message");
           response.body.message.should.be.eql(
@@ -127,6 +131,7 @@ describe("Hospital-API", () => {
           }
           //checking for various property to validate response object
           response.should.have.status(500);
+          response.body.should.be.a("object");
           response.body.should.have.property("success").eql(false);
           response.body.should.have.property("message");
           response.body.message.should.be.eql("Internal Server Error");

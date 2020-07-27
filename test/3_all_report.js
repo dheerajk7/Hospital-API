@@ -19,6 +19,7 @@ describe("Hospital-API", () => {
           }
           //checking for various property to validate response object
           response.should.have.status(200);
+          response.body.should.be.a("object");
           response.body.data.should.have.property("patient");
           response.body.data.should.have.property("reports");
           response.body.should.have.property("message");
@@ -37,6 +38,7 @@ describe("Hospital-API", () => {
           }
           //checking for various property to validate response object
           response.should.have.status(402);
+          response.body.should.be.a("object");
           response.body.should.have.property("success").eql(false);
           response.body.should.have.property("message");
           response.body.message.should.be.eql("Invalid Patient ID");
