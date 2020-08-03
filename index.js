@@ -21,3 +21,5 @@ app.listen(port, function (err) {
   console.log("Server is running and up at port ", port);
   return;
 });
+
+module.exports = app;

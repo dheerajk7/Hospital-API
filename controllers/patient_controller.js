@@ -38,12 +38,12 @@ module.exports.register = async function (request, response) {
 
 module.exports.createReport = async function (request, response) {
   try {
-    let patient = await Patient.findByIdAndUpdate(request.params.id);
+    let patient = await Patient.findById({ _id: request.params.id });
     //if patient doesn't exist
     if (!patient) {
       return response.status(402).json({
         success: false,
-        message: "Patient not registered",
+        message: "Patient not registered or patient ID is incorrect",
       });
     }
 
@@ -60,6 +60,7 @@ module.exports.createReport = async function (request, response) {
     //checking if status is four of these values or not
     if (!statusValues.includes(status)) {
       return response.status(402).json({
+        success: false,
         message:
           "Status value is incorrect...values can be only Negative, Travelled-Quarantine, Symptoms-Quarantine, Positive-Admit",
       });
@@ -68,7 +69,6 @@ module.exports.createReport = async function (request, response) {
     //setting the current date if date is not given by doctor for report creation
     if (date == undefined) {
       //if date is not defined then getting current date for report creation
-      console.log("getting current date");
       let currentDate = new Date();
       date =
         currentDate.getDate() +
@@ -105,7 +105,13 @@ module.exports.createReport = async function (request, response) {
       message: "Report created successfully",
     });
   } catch (err) {
-    console.log(err);
+    //handling cast error when invalid patient ID is received
+    if (err.name === "CastError") {
+      return response.status(402).json({
+        success: false,
+        message: "Invalid Patient ID",
+      });
+    }
     return response.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -114,19 +120,33 @@ module.exports.createReport = async function (request, response) {
 };
 
 module.exports.allReports = async function (request, response) {
-  //finding all reports of user
-  let patient = await Patient.findById(request.params.id).populate("reports");
-  let finalReports = [];
-  //removing some information from report object
-  for (report of patient.reports) {
-    finalReports.push(report.toObject());
+  try {
+    //finding all reports of user
+    let patient = await Patient.findById(request.params.id).populate("reports");
+    let finalReports = [];
+    //removing some information from report object
+    for (report of patient.reports) {
+      finalReports.push(report.toObject());
+    }
+    return response.status(200).json({
+      data: {
+        patient: patient.toObject(),
+        reports: finalReports,
+      },
+      success: true,
+      message: "All reports Received",
+    });
+  } catch (err) {
+    //handling cast error when invalid patient ID is received
+    if (err.name === "CastError") {
+      return response.status(402).json({
+        success: false,
+        message: "Invalid Patient ID",
+      });
+    }
+    return response.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
   }
-  return response.status(200).json({
-    data: {
-      patient: patient.toObject(),
-      reports: finalReports,
-    },
-    success: true,
-    message: "All reports Received",
-  });
 };
